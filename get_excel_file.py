@@ -9,9 +9,7 @@ class get_file:
         self.query = ''
         self.soup = ''
 
-        return self
-
-    def scrape_dom():
+    def scrape_dom(self):
 
 # function to extract html document from given url
         def getHTMLdocument(url):
@@ -26,13 +24,11 @@ class get_file:
         html_document = getHTMLdocument(url_to_scrape)
 
 # create soup object
-        soup = bs4.BeautifulSoup(html_document, 'html.parser')
-
-        return soup
+        self.soup = bs4.BeautifulSoup(html_document, 'html.parser')
 
 # asks the user to input year and date to filter out search query/download only one file
 
-    def get_user_input():
+    def get_user_input(self):
         year = ""
         quarter = ""
         
@@ -41,9 +37,7 @@ class get_file:
 
         quarter = input('Which quarter? (Q1, Q2, Q3, Q4): ')
 
-        query = f'a[href*=LCA_Disclosure_Data_FY{year}_{quarter}]'
-
-        return query
+        self.query = f'a[href*=LCA_Disclosure_Data_FY{year}_{quarter}]'
 
 # Find the links to the relevant excel files
 
@@ -71,6 +65,7 @@ class get_file:
                 output_file.write(response.content)
 
 # EXECUTE FUNCTIONS
-get_file.scrape_dom()
-get_file.get_user_input()
-get_file.download_file()
+some_file = get_file()
+some_file.scrape_dom()
+some_file.get_user_input()
+some_file.download_file()
