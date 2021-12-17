@@ -1,6 +1,8 @@
 beautifulsoup4
+black
 openpyxl
 pandas
+pytest
 python-dotenv
 requests
 sqlalchemy
