@@ -7,7 +7,22 @@ class Data:
     def __init__(self):
         self._base_url = 'https://www.dol.gov'
         self._url_to_scrape = 'https://www.dol.gov/agencies/eta/foreign-labor/performance'
+        self._schedule = {
+            datetime.now().year - 1:{},
+            datetime.now().year: {}
+        }
         self._file_name = None
+
+    def _generate_schedule(self):
+        for month in range(1, 13):
+            if 1 <= month <= 3:
+                self._schedule[datetime.now().year - 1][month] = "Q4"
+            elif 4 <= month <= 6:
+                self._schedule[datetime.now().year][month] = "Q1"
+            elif 7 <= month <= 9:
+                self._schedule[datetime.now().year][month] = "Q2"
+            else:
+                self._schedule[datetime.now().year][month] = "Q3"
    
     def _getHTMLdocument(self):
         """function to extract html document from given url"""
@@ -19,53 +34,39 @@ class Data:
     def _set_file_name(self, year, quarter):
         self._file_name = f'a[href*=LCA_Disclosure_Data_FY{year}_{quarter}]'
 
-    def _check_calendar(self, curr_mo=None, year=None):
-        # Determine 'year' and 'quarter' for url
-        if curr_mo is None and year is None:
-            curr_mo = datetime.now().month
-            year = datetime.now().year
+    def _get_scraped_period(self, year, quarter, manual_input=False):
 
-        if 1 <= curr_mo <= 3:
-            year -= 1
-            quarter = "Q4"
-        elif 4 <= curr_mo <= 6:
-            quarter = "Q1"
-        elif 7 <= curr_mo <= 9:
-            quarter = "Q2"
-        else: #10<= current month<=12
-            quarter = "Q3"
-
-        return year, quarter
-
-    def _init_soup(self):
         # create document
         html_document = self._getHTMLdocument()
+
         # create soup object
         soup = bs4.BeautifulSoup(html_document, 'html.parser')
-
-        return soup
-
-    def _init_query(self, year, quarter, manual_input=False):
+        
         # Handle manual input
         if manual_input:
             self._set_file_name(year, quarter)
+            return soup, self._file_name
+        
+        # Get correct quarter period
+        if 1 <= datetime.now().month and datetime.now().month <= 3:
+            # Get Q4 of previous year if current month is 1~3,
+            # as currenet year's Q1 data may not be out.
+            quarter=self._schedule[datetime.now().year - 1][datetime.now().month]
         else:
-            # Sets url with correct year & quarter
-            year, quarter = self._check_calendar()
-            self._set_file_name(year, quarter)
+            quarter=self._schedule[datetime.now().year][datetime.now().month]
 
-        return self._file_name
+        self._set_file_name(datetime.now().year, quarter)
+        return soup, self._file_name
 
-    def _get_tag_elements(self, year=None, quarter=None, manual_input=False):
-        soup = self._init_soup()
-        query = self._init_query(year, quarter, manual_input)
+    def get_file(self, year=None, quarter=None, manual_input=False):
+
+        self._generate_schedule()
+
+        soup, query = self._get_scraped_period(year, quarter, manual_input)
 
         # Find the links to the relevant excel files
         matching_tag_elements = soup.select(query)
 
-        return matching_tag_elements
-
-    def something(self):
         for tag_element in matching_tag_elements:
 
             # tag_element is the entire class a tag that contains the href so this will extract the value of href
