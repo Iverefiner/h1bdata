@@ -1,8 +1,15 @@
 beautifulsoup4
+<<<<<<< HEAD
 flask
 openpyxl
 pandas
 psycopg2-binary
+=======
+black
+openpyxl
+pandas
+pytest
+>>>>>>> 44fd0ad70b122da4f1c0ff1066e7e8999a7de53c
 python-dotenv
 requests
 sqlalchemy

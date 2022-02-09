@@ -13,6 +13,9 @@ __pycache__/
 .DS_STORE
 .DS_store
 /.env
+<<<<<<< HEAD
 
 /note_self.txt
 /env/
+=======
+>>>>>>> 44fd0ad70b122da4f1c0ff1066e7e8999a7de53c
