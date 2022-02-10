@@ -14,4 +14,7 @@ __pycache__/
 .DS_store
 /.env
 
+/note_self.txt
+/env/
+
 root.crt
