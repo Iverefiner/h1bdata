@@ -104,11 +104,13 @@ if __name__ == "__main__":
     # Load environment variables set in the .env file
     load_dotenv()
 
-    # Create a dataframe from the csv file
-    df = excel_to_df(EXCEL_FILE_PATH)
+    print(CRDB_CONN_STR)
 
-    # Connect to database
-    engine = connect_to_database()
+    # # Create a dataframe from the csv file
+    # df = excel_to_df(EXCEL_FILE_PATH)
 
-    # Export the dataframe to the database
-    export_dataframe_to_database(df, engine, "h1bdata_table")
+    # # Connect to database
+    # engine = connect_to_database()
+
+    # # Export the dataframe to the database
+    # export_dataframe_to_database(df, engine, "h1bdata_table")
