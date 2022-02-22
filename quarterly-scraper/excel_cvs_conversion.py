@@ -1,10 +1,12 @@
 from get_excel_file import Data
-from dotenv import load_dotenv
+from dotenv import dotenv_values
+temp = dotenv_values('.env')
+TOKEN = temp['CRDB_CONN_STR']
+import os
 import pandas as pd
 import sqlalchemy
 
 # import csv
-import os
 
 COLS_TO_USE = [
     "CASE_NUMBER",
@@ -102,9 +104,9 @@ def export_dataframe_to_database(df, engine, table_name):
 
 if __name__ == "__main__":
     # Load environment variables set in the .env file
-    load_dotenv()
+    # load_dotenv()
 
-    print(CRDB_CONN_STR)
+    print(TOKEN)
 
     # # Create a dataframe from the csv file
     # df = excel_to_df(EXCEL_FILE_PATH)
