@@ -1,7 +1,5 @@
 from get_excel_file import Data
-from dotenv import dotenv_values
-temp = dotenv_values('.env')
-TOKEN = temp['CRDB_CONN_STR']
+from dotenv import load_dotenv
 import os
 import pandas as pd
 import sqlalchemy
@@ -104,15 +102,13 @@ def export_dataframe_to_database(df, engine, table_name):
 
 if __name__ == "__main__":
     # Load environment variables set in the .env file
-    # load_dotenv()
+    load_dotenv()
 
-    print(TOKEN)
+    # Create a dataframe from the csv file
+    df = excel_to_df(EXCEL_FILE_PATH)
 
-    # # Create a dataframe from the csv file
-    # df = excel_to_df(EXCEL_FILE_PATH)
+    # Connect to database
+    engine = connect_to_database()
 
-    # # Connect to database
-    # engine = connect_to_database()
-
-    # # Export the dataframe to the database
-    # export_dataframe_to_database(df, engine, "h1bdata_table")
+    # Export the dataframe to the database
+    export_dataframe_to_database(df, engine, "h1bdata_table")
